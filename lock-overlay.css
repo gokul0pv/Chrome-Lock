@@ -1,0 +1,6 @@
+/* While Chrome Lock is engaged in wallpaper mode (live page turned off), hide
+   all page content. In glass mode the page stays visible under the frosted veil. */
+html[data-chrome-lock="solid"] > body,
+html[data-chrome-lock="solid"] > frameset {
+  visibility: hidden !important;
+}

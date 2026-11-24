@@ -1,0 +1,43 @@
+/* Animated mesh-gradient wallpaper shared by the lock screen and settings sheets. */
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--base, #0b0b22);
+  transition: filter .6s ease, transform .6s ease, opacity .5s ease;
+  z-index: 0;
+}
+
+.wallpaper .blob {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .85;
+  will-change: transform;
+}
+
+.wallpaper .b1 { background: var(--c1); top: -25vmax; left: -15vmax; animation: cl-drift-1 26s ease-in-out infinite alternate; }
+.wallpaper .b2 { background: var(--c2); top: 10vmax; right: -30vmax; animation: cl-drift-2 32s ease-in-out infinite alternate; }
+.wallpaper .b3 { background: var(--c3); bottom: -35vmax; left: 10vmax; opacity: .7; animation: cl-drift-3 38s ease-in-out infinite alternate; }
+
+.wallpaper .grain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(0,0,0,.55), transparent 60%),
+    radial-gradient(ellipse at 50% -20%, rgba(0,0,0,.35), transparent 55%);
+}
+
+.wallpaper.dim { filter: blur(18px) brightness(.62) saturate(1.15); transform: scale(1.06); }
+
+@keyframes cl-drift-1 { to { transform: translate(18vmax, 12vmax) scale(1.15); } }
+@keyframes cl-drift-2 { to { transform: translate(-22vmax, 8vmax) scale(.9); } }
+@keyframes cl-drift-3 { to { transform: translate(14vmax, -16vmax) scale(1.2); } }
+
+.reduce-motion .wallpaper .blob { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wallpaper .blob { animation: none; }
+}

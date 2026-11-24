@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chrome Lock Settings</title>
+  <link rel="icon" href="icons/lock-32.png">
+  <link rel="stylesheet" href="wallpaper.css">
+  <link rel="stylesheet" href="glass.css">
+  <link rel="stylesheet" href="passcode.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="wallpaper" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+  <div class="app glass" id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar glass">
+      <button class="me" type="button" data-pane="profile">
+        <span class="avatar" id="side-avatar"></span>
+        <span class="me-text">
+          <b id="side-name">Your Name</b>
+          <small>Chrome Lock Profile</small>
+        </span>
+      </button>
+
+      <nav class="nav" aria-label="Settings">
+        <button class="nav-item" type="button" data-pane="passcode">
+          <span class="ic" style="--ic:#ff453a"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          Passcode
+        </button>
+        <button class="nav-item" type="button" data-pane="autolock">
+          <span class="ic" style="--ic:#0a84ff"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+          Auto-Lock
+        </button>
+        <button class="nav-item" type="button" data-pane="lockscreen">
+          <span class="ic" style="--ic:#5e5ce6"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2.5"/><path d="M8 21h8M12 17v4"/></svg></span>
+          Lock Screen
+        </button>
+        <button class="nav-item" type="button" data-pane="activity">
+          <span class="ic" style="--ic:#8e8e93"><svg viewBox="0 0 24 24"><path d="M4 12h4l3-7 3 14 3-7h3"/></svg></span>
+          Activity
+        </button>
+      </nav>
+
+      <div class="side-status" id="side-status"></div>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <header class="toolbar">
+        <h1 id="pane-title">Passcode</h1>
+        <button id="lock-now" class="btn primary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Lock Now
+        </button>
+      </header>
+
+      <div class="scroller">
+        <!-- Profile -->
+        <section class="pane" id="pane-profile" data-title="Profile">
+          <div class="profile-hero">
+            <button class="avatar-edit" id="pick-photo" type="button" aria-label="Choose picture">
+              <span class="avatar" id="big-avatar"></span>
+              <span class="avatar-badge">Edit</span>
+            </button>
+            <h2 id="hero-name">Your Name</h2>
+            <p>Shown on the lock screen above your passcode</p>
+          </div>
+
+          <div class="group">
+            <label class="row">
+              <span class="label">Name</span>
+              <input type="text" class="text" id="profileName" maxlength="40" placeholder="Your name" autocomplete="off" spellcheck="false">
+            </label>
+            <div class="row">
+              <span class="label">Picture</span>
+              <span class="btn-pair">
+                <button class="btn" id="pick-photo-2" type="button">Choose…</button>
+                <button class="btn" id="remove-photo" type="button">Remove</button>
+              </span>
+            </div>
+          </div>
+          <p class="foot">Chrome doesn’t share your profile name with extensions, so type it here. Without a picture, your initials are shown.</p>
+          <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+        </section>
+
+        <!-- Passcode -->
+        <section class="pane" id="pane-passcode" data-title="Passcode">
+          <div class="group status-card">
+            <span class="status-ic" id="status-ic"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+            <div>
+              <b id="status-title">Passcode</b>
+              <p id="status-text">Loading…</p>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="row" id="row-turn-on">
+              <span class="label">Passcode</span>
+              <button id="turn-on" class="btn primary" type="button">Turn Passcode On…</button>
+            </div>
+            <div class="row" id="row-change">
+              <span class="label">Change passcode</span>
+              <button id="change" class="btn" type="button">Change…</button>
+            </div>
+            <div class="row" id="row-turn-off">
+              <span class="label">Turn off passcode</span>
+              <button id="turn-off" class="btn danger" type="button">Turn Off…</button>
+            </div>
+          </div>
+
+          <h3 class="group-title">Security</h3>
+          <div class="group">
+            <div class="row">
+              <span class="label">Disable unlocking after failed attempts</span>
+              <select id="lockoutThreshold" class="popup">
+                <option value="0">Off</option>
+                <option value="3">3 attempts</option>
+                <option value="5">5 attempts</option>
+                <option value="10">10 attempts</option>
+              </select>
+            </div>
+          </div>
+          <p class="foot">Every wrong passcode after the limit disables unlocking for longer: 1, 5, 15, then 60 minutes.</p>
+        </section>
+
+        <!-- Auto-Lock -->
+        <section class="pane" id="pane-autolock" data-title="Auto-Lock">
+          <div class="group">
+            <div class="row">
+              <span class="label">Lock Chrome when idle for</span>
+              <select id="autoLockMinutes" class="popup">
+                <option value="0">Never</option>
+                <option value="1">1 minute</option>
+                <option value="2">2 minutes</option>
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+              </select>
+            </div>
+            <label class="row">
+              <span class="label">Lock when the computer locks</span>
+              <input type="checkbox" class="switch" id="lockOnSystemLock">
+            </label>
+            <label class="row">
+              <span class="label">Lock when Chrome starts</span>
+              <input type="checkbox" class="switch" id="lockOnStartup">
+            </label>
+          </div>
+
+          <h3 class="group-title">Keyboard Shortcut</h3>
+          <div class="group">
+            <div class="row">
+              <span class="label">Lock Chrome</span>
+              <kbd class="kbd" id="shortcut">Not set</kbd>
+              <button class="btn" id="shortcut-btn" type="button">Change…</button>
+            </div>
+          </div>
+          <p class="foot">Shortcuts are edited on Chrome’s extension shortcuts page.</p>
+        </section>
+
+        <!-- Lock Screen -->
+        <section class="pane" id="pane-lockscreen" data-title="Lock Screen">
+          <div class="group wall">
+            <div class="preview" id="preview">
+              <div class="wallpaper" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+              <div class="pv-clock">
+                <div class="pv-date" id="pv-date"></div>
+                <div class="pv-time" id="pv-time"></div>
+                <div class="pv-msg" id="pv-msg"></div>
+              </div>
+              <div class="pv-login">
+                <span class="avatar" id="pv-avatar"></span>
+                <span class="pv-name" id="pv-name"></span>
+                <span class="pv-field glass" id="pv-field"></span>
+              </div>
+            </div>
+            <div class="wall-side">
+              <span class="label">Wallpaper</span>
+              <div class="swatches" id="swatches" role="radiogroup" aria-label="Wallpaper"></div>
+              <span class="wall-name" id="wall-name"></span>
+              <span class="wall-hint" id="wall-hint">Used when the live page is off, and on pages extensions can’t draw over, such as the New Tab page and chrome:// pages.</span>
+            </div>
+          </div>
+
+          <div class="group">
+            <label class="row">
+              <span class="label">Show the live page behind frosted glass</span>
+              <input type="checkbox" class="switch" id="blurBackground">
+            </label>
+            <label class="row">
+              <span class="label">Show clock and date</span>
+              <input type="checkbox" class="switch" id="showClock">
+            </label>
+            <label class="row">
+              <span class="label">Play sound when typing passcode</span>
+              <input type="checkbox" class="switch" id="keySound">
+            </label>
+            <label class="row">
+              <span class="label">Reduce motion</span>
+              <input type="checkbox" class="switch" id="reduceMotion">
+            </label>
+            <label class="row">
+              <span class="label">Message</span>
+              <input type="text" class="text" id="message" maxlength="80" placeholder="e.g. If found, call 555-0100" autocomplete="off">
+            </label>
+          </div>
+        </section>
+
+        <!-- Activity -->
+        <section class="pane" id="pane-activity" data-title="Activity">
+          <div class="group" id="log-card">
+            <div class="row empty" id="log-empty">No activity yet</div>
+          </div>
+          <div class="pane-actions"><button class="btn" id="clear-log" type="button">Clear Activity</button></div>
+        </section>
+
+        <p class="fine">Chrome Lock is a privacy screen, not OS-level security. Someone with access to your Windows account can still reach Chrome’s files or settings in other ways.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Passcode sheet -->
+  <div class="sheet-backdrop" id="sheet" hidden>
+    <div class="sheet glass" role="dialog" aria-modal="true" aria-label="Passcode">
+      <div class="sheet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 11V7.6a4.5 4.5 0 0 1 9 0V11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="4.5" y="10.5" width="15" height="11" rx="3" fill="currentColor"/></svg></div>
+      <div id="sheet-field"></div>
+      <div class="sheet-actions"><button class="btn" id="sheet-cancel" type="button">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="themes.js"></script>
+  <script src="passcode.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+:root {
+  /* Must match the content script's frame (color-scheme: only light) or Chrome
+     paints the embedded lock screen opaque instead of see-through. */
+  color-scheme: only light;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  color: #fff;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Full-page mode sits on black under the wallpaper; over a live page it's clear. */
+html.mode-tab, html.mode-tab body { background: #000; }
+html.mode-embed, html.mode-embed body { background: transparent; }
+
+.wallpaper { display: none; }
+body.show-wallpaper .wallpaper { display: block; }
+
+.clock, .login {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+  text-align: center;
+  transition: opacity .5s cubic-bezier(.2,.8,.2,1), transform .65s cubic-bezier(.2,.8,.2,1), filter .5s ease;
+}
+
+/* Legibility over any page: soft, wide shadows that read as depth, not outline. */
+.date, .name, .message, .pf-sub {
+  text-shadow: 0 1px 2px rgba(0,0,0,.28), 0 2px 18px rgba(0,0,0,.32);
+}
+
+/* ---------- Top: lock badge, date, clock ---------- */
+.clock { top: clamp(18px, 5.5vh, 72px); }
+
+.badge {
+  --g-top: rgba(255,255,255,.26);
+  --g-bot: rgba(255,255,255,.08);
+  --g-blur: 0px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: clamp(8px, 1.6vh, 16px);
+  border-radius: 50%;
+  color: rgba(255,255,255,.95);
+}
+.badge svg { width: 14px; height: 14px; overflow: visible; filter: drop-shadow(0 1px 2px rgba(0,0,0,.25)); }
+.badge .shackle {
+  transform-box: view-box;
+  transform-origin: 16.5px 11px;
+  transition: transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+
+.date {
+  font-size: clamp(15px, 2.5vh, 23px);
+  font-weight: 600;
+  letter-spacing: .1px;
+  color: rgba(255,255,255,.9);
+}
+
+/* Big Liquid Glass clock: bright frosted numerals, a specular top edge and a
+   cool refracted lower half. */
+.time {
+  margin-top: .02em;
+  font-size: clamp(56px, min(15vw, 21vh), 190px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,.9) 34%,
+      rgba(222,234,255,.7) 66%,
+      rgba(255,255,255,.88) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter:
+    drop-shadow(0 1px 0 rgba(255,255,255,.4))
+    drop-shadow(0 10px 30px rgba(0,0,0,.26));
+}
+
+.message {
+  max-width: min(520px, 90vw);
+  margin-top: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.1);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.16);
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: rgba(255,255,255,.9);
+}
+.message:empty { display: none; }
+
+/* ---------- Bottom: avatar, name, passcode capsule ---------- */
+.login { bottom: clamp(28px, 9vh, 110px); }
+
+/* A thin glass ring around the picture. */
+.avatar-ring {
+  padding: 3px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.08) 45%, rgba(255,255,255,.3));
+  box-shadow: 0 12px 34px -10px rgba(0,0,0,.45);
+}
+.login .avatar { --size: clamp(56px, 9.5vh, 84px); box-shadow: none; }
+
+.name {
+  max-width: 90vw;
+  margin-top: 12px;
+  overflow: hidden;
+  font-size: clamp(15px, 2.2vh, 19px);
+  font-weight: 600;
+  letter-spacing: .1px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#field { margin-top: 14px; }
+
+/* The page underneath is already frosted, so the capsule is a brighter lens
+   with a crisp rim rather than another blur. */
+.login .pf-field {
+  --g-top: rgba(255,255,255,.28);
+  --g-bot: rgba(255,255,255,.1);
+  --g-blur: 0px;
+  --g-sat: 100%;
+  min-width: 190px;
+  height: 42px;
+}
+
+/* Wrong passcode: the capsule's rim flushes red while it shakes. */
+body.wrong #field { animation: wrong-glow .9s ease; }
+@keyframes wrong-glow {
+  0%, 100% { --pf-ring: rgba(255,255,255,.14); }
+  20%, 60% { --pf-ring: rgba(255,90,95,.5); }
+}
+@property --pf-ring { syntax: '<color>'; inherits: true; initial-value: rgba(255,255,255,.14); }
+
+/* No clock: centre the login block in the window. */
+body.no-clock .clock { display: none; }
+body.no-clock .login { top: 50%; bottom: auto; transform: translateY(-50%); }
+
+/* Short windows: tighten the layout. */
+@media (max-height: 560px) {
+  .badge { display: none; }
+}
+@media (max-height: 520px) {
+  .message { display: none; }
+  .login .avatar { --size: 48px; }
+  .name { margin-top: 8px; }
+  #field { margin-top: 10px; }
+}
+@media (max-height: 400px) {
+  .clock { display: none; }
+  .login { top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+
+/* ---------- Boot + unlock ---------- */
+body.booting .clock { opacity: 0; transform: translateY(-16px); }
+body.booting .login { opacity: 0; transform: translateY(16px); }
+body.booting.no-clock .login { transform: translateY(calc(-50% + 16px)); }
+
+/* Unlock: the shackle springs open, then everything lifts away as the glass
+   clears and the live page comes back into focus. */
+body.unlocking .badge .shackle { transform: translateY(-3px) rotate(-28deg); }
+body.unlocking .clock { opacity: 0; transform: translateY(-40px) scale(.97); filter: blur(6px); transition-delay: .16s; }
+body.unlocking .login { opacity: 0; transform: translateY(24px) scale(.95); filter: blur(6px); transition-delay: .16s; }
+body.unlocking.no-clock .login { transform: translateY(calc(-50% + 24px)) scale(.95); }
+body.unlocking .wallpaper { opacity: 0; transform: scale(1.12); transition: opacity .55s .22s ease, transform .7s .1s ease; }
+
+.reduce-motion .clock, .reduce-motion .login, .reduce-motion .wallpaper, .reduce-motion .shackle {
+  transition-duration: .01s !important;
+  transition-delay: 0s !important;
+}
+.reduce-motion body.wrong #field { animation: none; }

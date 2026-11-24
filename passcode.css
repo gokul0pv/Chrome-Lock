@@ -1,0 +1,101 @@
+/* Passcode field: dots in a Liquid Glass capsule. Colours come from the host surface:
+   --pf-ink (dot + text colour), --pf-muted, --pf-error, --pf-accent. */
+.pf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--pf-ink, #fff);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pf-title {
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.1px;
+  text-align: center;
+}
+.pf-title[hidden] { display: none; }
+
+.pf-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 999px;
+  cursor: text;
+  transition: box-shadow .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+}
+.pf.ready .pf-field {
+  box-shadow:
+    inset 0 1px 1px var(--g-spec, rgba(255,255,255,.5)),
+    0 0 0 3.5px var(--pf-ring, rgba(255,255,255,.14)),
+    0 10px 30px -10px var(--g-shadow, rgba(0,0,0,.35));
+}
+.pf-field.nudge { animation: pf-nudge .4s cubic-bezier(.34,1.56,.64,1); }
+.pf-field.shake { animation: pf-shake .5s cubic-bezier(.36,.07,.19,.97); }
+
+.pf-dots { display: flex; gap: 16px; }
+.pf-dots[data-len="4"] { gap: 20px; }
+
+.pf-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.4px var(--pf-dot-ring, rgba(255,255,255,.55));
+  transition: background-color .15s ease, box-shadow .15s ease, transform .2s ease;
+}
+.pf-dot.on {
+  background: var(--pf-ink, #fff);
+  box-shadow: inset 0 0 0 1.4px var(--pf-ink, #fff), 0 0 10px var(--pf-glow, rgba(255,255,255,.35));
+  animation: pf-pop .24s cubic-bezier(.34,1.56,.64,1);
+}
+.pf.ready .pf-dot.next { animation: pf-breathe 1.6s ease-in-out infinite; }
+
+.pf-sub {
+  min-height: 18px;
+  max-width: 320px;
+  margin: 12px 0 0;
+  color: var(--pf-muted, rgba(255,255,255,.72));
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+  transition: color .2s ease;
+}
+.pf-sub[data-tone="error"] { color: var(--pf-error, #ffc9cf); }
+
+.pf-options {
+  margin: 10px 0 0;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--pf-accent, #fff);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.pf-options:hover { text-decoration: underline; }
+.pf-options[hidden] { display: none; }
+
+.pf.disabled .pf-field { opacity: .45; }
+.pf.unlocked .pf-field { transform: scale(1.04); }
+
+.pf-shackle { transition: transform .45s cubic-bezier(.34,1.56,.64,1); transform-box: view-box; transform-origin: 16.5px 11px; }
+
+@keyframes pf-pop { 0% { transform: scale(.55); } 60% { transform: scale(1.22); } 100% { transform: scale(1); } }
+@keyframes pf-breathe { 0%, 100% { box-shadow: inset 0 0 0 1.4px var(--pf-dot-ring, rgba(255,255,255,.55)); } 50% { box-shadow: inset 0 0 0 1.4px var(--pf-ink, #fff); } }
+@keyframes pf-nudge { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+@keyframes pf-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-12px); }
+  40%, 60% { transform: translateX(12px); }
+}
+
+.reduce-motion .pf *, .reduce-motion .pf { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .pf *, .pf { animation: none !important; }
+}

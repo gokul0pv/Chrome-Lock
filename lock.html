@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chrome is Locked</title>
+  <link rel="icon" href="icons/lock-32.png">
+  <link rel="stylesheet" href="wallpaper.css">
+  <link rel="stylesheet" href="glass.css">
+  <link rel="stylesheet" href="passcode.css">
+  <link rel="stylesheet" href="lock.css">
+</head>
+<body class="booting">
+  <!-- Full-page mode and wallpaper mode only. Over a live page (mode=embed) the
+       page itself, blurred by the content script's veil, is the background. -->
+  <div class="wallpaper" id="wallpaper" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="clock" id="clock">
+    <div class="badge glass" id="badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path class="shackle" d="M7.5 11V7.6a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="4.5" y="10.5" width="15" height="11" rx="3" fill="currentColor"/></svg>
+    </div>
+    <div class="date" id="date"></div>
+    <div class="time" id="time"></div>
+    <div class="message" id="message"></div>
+  </header>
+
+  <main class="login" id="login" aria-label="Enter passcode">
+    <div class="avatar-ring"><div class="avatar" id="avatar"></div></div>
+    <div class="name" id="name"></div>
+    <div id="field"></div>
+  </main>
+
+  <script src="themes.js"></script>
+  <script src="passcode.js"></script>
+  <script src="lock.js"></script>
+</body>
+</html>

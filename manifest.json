@@ -1,0 +1,77 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Lock",
+  "version": "2.1.0",
+  "description": "Lock all of Chrome behind a macOS-style Liquid Glass passcode screen, drawn over your live, blurred window.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "idle",
+    "alarms",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Lock Chrome (right-click for settings)",
+    "default_icon": {
+      "16": "icons/lock-16.png",
+      "32": "icons/lock-32.png",
+      "48": "icons/lock-48.png",
+      "128": "icons/lock-128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icons/lock-16.png",
+    "32": "icons/lock-32.png",
+    "48": "icons/lock-48.png",
+    "128": "icons/lock-128.png"
+  },
+  "commands": {
+    "lock-now": {
+      "suggested_key": {
+        "default": "Alt+Shift+L",
+        "mac": "Alt+Shift+L"
+      },
+      "description": "Lock Chrome now"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "themes.js",
+        "content.js"
+      ],
+      "css": [
+        "lock-overlay.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lock.html",
+        "lock.css",
+        "lock.js",
+        "glass.css",
+        "passcode.css",
+        "passcode.js",
+        "themes.js",
+        "wallpaper.css",
+        "icons/lock-32.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
