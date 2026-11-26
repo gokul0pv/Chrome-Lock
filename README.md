@@ -5,6 +5,23 @@ Lock **all of Chrome** behind a macOS-style Liquid Glass lock screen drawn right
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue)](https://developer.chrome.com/docs/extensions/mv3/)
 
+![Locked: the live page blurred behind Liquid Glass, passcode half typed](docs/screenshots/lock-live-glass.png)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![The page before locking](docs/screenshots/page-unlocked.png) | ![The same page, locked](docs/screenshots/lock-live-glass.png) |
+| **Before.** An ordinary page. | **Locked, live glass.** The same page keeps running under frosted glass; the dots fill as you type. |
+| ![Live animated wallpaper](docs/screenshots/live-wallpaper.webp) | ![Wallpaper lock screen](docs/screenshots/lock-wallpaper.png) |
+| **Live wallpaper.** With the live page turned off, the gradient drifts slowly (sped up here). | **Wallpaper mode.** Also used on New Tab and `chrome://` pages. Shown: Sunset. |
+| ![Settings, Lock Screen pane, dark](docs/screenshots/settings-lock-screen-dark.png) | ![Settings, Passcode pane, light](docs/screenshots/settings-passcode-light.png) |
+| **Settings, dark.** Wallpaper picker with a live preview. | **Settings, light.** Passcode and failed-attempt protection. |
+
+All eight wallpapers: Tahoe, Aurora, Sunset, Ocean (top); Forest, Rose Gold, Graphite, Midnight (bottom).
+
+![The eight wallpapers](docs/screenshots/wallpapers.jpg)
+
 ## Features
 
 - 🖥️ **Whole-browser lock** — the glass lock covers every page in place (no separate lock window to close). Closing or minimizing the locked window doesn't get you in: whichever Chrome window you bring up next is already locked.
